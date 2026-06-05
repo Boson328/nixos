@@ -17,7 +17,7 @@
   networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
@@ -27,7 +27,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "ja_JP.UTF-8";
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
@@ -51,10 +51,18 @@
   # Enable sound.
   # hardware.pulseaudio.enable = true;
   # OR
-  # services.pipewire = {
-  #   enable = true;
-  #   pulse.enable = true;
-  # };
+  services.pipewire = {
+     enable = true;
+     alsa.enable = true;
+     pulse.enable = true;
+  };
+
+  hardware.pulseaudio.enable = false;
+
+  services.displayManager.sddm = {
+     enable = true;
+     wayland.enable = true;
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
@@ -63,7 +71,7 @@
   users.users.boson = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    password = "haruhito0328";
+    password = "boson328";
   };
 
   # programs.firefox.enable = true;
@@ -71,9 +79,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+     neovim 
      wget
      git
+     foot
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -83,6 +92,9 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  programs.niri = {
+	enable = true;
+  };
 
   # List services that you want to enable:
 
