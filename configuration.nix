@@ -2,13 +2,18 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -17,7 +22,7 @@
   networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
@@ -37,9 +42,10 @@
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -52,16 +58,18 @@
   # hardware.pulseaudio.enable = true;
   # OR
   services.pipewire = {
-     enable = true;
-     alsa.enable = true;
-     pulse.enable = true;
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
   };
 
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   services.displayManager.sddm = {
-     enable = true;
-     wayland.enable = true;
+    enable = true;
+    wayland.enable = true;
+    theme = "sddm-astronaut-theme";
+    extraPackages = [ pkgs.sddm-astronaut ];
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -72,6 +80,7 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     password = "boson328";
+    shell = pkgs.fish;
   };
 
   # programs.firefox.enable = true;
@@ -79,10 +88,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     neovim 
-     wget
-     git
-     foot
+    neovim
+    wget
+    git
+    foot
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -93,7 +102,20 @@
   #   enableSSHSupport = true;
   # };
   programs.niri = {
-	enable = true;
+    enable = true;
+  };
+
+  programs.fish.enable = true;
+
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/home/boson/.config/sops/age/keys.txt";
+    secrets.github_ssh_key = {
+      path = "/home/boson/.ssh/id_ed25519";
+      owner = "boson";
+      mode = "0600";
+    };
   };
 
   # List services that you want to enable:
@@ -131,5 +153,5 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.11"; # Did you read the comment?
 
+  nixpkgs.config.allowUnfree = true;
 }
-

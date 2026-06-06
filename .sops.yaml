@@ -1,0 +1,8 @@
+keys:
+  - &boson age1xgz0sd82k8l8h9wzdej4ye9q2zfldjglpp60xa3ersajx4jmmuws8nfj96
+
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - age:
+          - *boson
