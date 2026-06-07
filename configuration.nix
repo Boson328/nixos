@@ -35,7 +35,16 @@ in
   ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = false;
+  boot.loader.limine = {
+    enable = true;
+    resolution = "1920x1080x32";
+    style = {
+      wallpapers = [
+        ./assets/limine-wallpaper.jpg
+      ];
+    };
+  };
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [ "video=1920x1080" ];
 
