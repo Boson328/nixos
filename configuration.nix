@@ -169,6 +169,7 @@ in
     sddm-astronaut-theme
     qt6.qtsvg
     qt6.qtmultimedia
+    brightnessctl
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

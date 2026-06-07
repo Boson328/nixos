@@ -60,10 +60,10 @@ get_workspaces() {
         first=false
         if [[ "$part" == ACTIVE:* ]]; then
             icons="${part#ACTIVE:}"
-            result="${result}<span foreground='#7aa2f7'>${icons}</span>"
+            result="${result}<span foreground='#ffffff'>${icons}</span>"
         else
             icons="${part#INACTIVE:}"
-            result="${result}<span foreground='#565f89'>${icons}</span>"
+            result="${result}<span foreground='#cccccc'>${icons}</span>"
         fi
     done
 
