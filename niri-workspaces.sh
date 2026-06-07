@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# niri のワークスペースとウィンドウ情報を取得してwaybar用JSONを出力
 
 get_workspaces() {
     workspaces=$(niri msg --json workspaces 2>/dev/null)
@@ -17,20 +16,11 @@ get_workspaces() {
             {
                 idx: .idx,
                 is_active: .is_active,
-                apps: (
+                icons: (
                     $wins
                     | map(select(.workspace_id == $ws.id))
                     | map(.app_id // "unknown")
-                )
-            }
-        ) |
-        map(
-            . as $ws |
-            {
-                idx: .idx,
-                is_active: .is_active,
-                icons: (
-                    .apps | map(
+                    | map(
                         if test("ghostty|terminal|alacritty|kitty|foot") then "󰆍"
                         elif test("firefox|librewolf") then "󰈹"
                         elif test("chromium|google-chrome|brave") then "󰊯"
@@ -50,22 +40,38 @@ get_workspaces() {
             }
         ) |
         map(
-            "<span" +
-            (if .is_active then " foreground=\"#7aa2f7\"" else " foreground=\"#565f89\"" end) +
-            ">" +
-            (if (.icons | length) > 0 then (.icons | join(" ")) else "󰝦" end) +
-            "</span>"
+            if .is_active then
+                "ACTIVE:" + (if (.icons | length) > 0 then (.icons | join(" ")) else "󰝦" end)
+            else
+                "INACTIVE:" + (if (.icons | length) > 0 then (.icons | join(" ")) else "󰝦" end)
+            end
         ) |
-        join("  ")
+        join("|")
     ')
 
-    echo "{\"text\": \"$output\", \"tooltip\": \"\", \"class\": \"\"}"
+    # シェル側でHTMLを組み立ててダブルクォートを避ける
+    result=""
+    first=true
+    IFS='|' read -ra parts <<< "$output"
+    for part in "${parts[@]}"; do
+        if [ "$first" != "true" ]; then
+            result="${result}  "
+        fi
+        first=false
+        if [[ "$part" == ACTIVE:* ]]; then
+            icons="${part#ACTIVE:}"
+            result="${result}<span foreground='#7aa2f7'>${icons}</span>"
+        else
+            icons="${part#INACTIVE:}"
+            result="${result}<span foreground='#565f89'>${icons}</span>"
+        fi
+    done
+
+    printf '{"text": "%s", "tooltip": "", "class": ""}\n' "$result"
 }
 
-# 初回出力
 get_workspaces
 
-# niri のイベントを監視してリアルタイム更新
 niri msg --json event-stream 2>/dev/null | while IFS= read -r line; do
     event=$(echo "$line" | jq -r 'keys[0]' 2>/dev/null)
     case "$event" in

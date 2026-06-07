@@ -21,44 +21,16 @@
     interactiveShellInit = ''
       zoxide init fish --cmd cd | source
       starship init fish | source
-
-        function fish_greeting
-            set seed (random 1 101)
-            set greet "Hello, World!"
-            
-            if test $seed -lt 10
-                set greet "Hello, World!"
-            else if test $seed -lt 20
-                set greet "Good Luck!"
-            else if test $seed -lt 30
-                set greet "May the Force!"
-            else if test $seed -lt 40
-                set greet "Stay Hungry, Stay Foolish!"
-            else if test $seed -lt 50
-                set greet "Awesome Fish!"
-            else if test $seed -lt 60
-                set greet "Deja vu!"
-            else if test $seed -lt 70
-                set greet "Never dig down!"
-            else if test $seed -lt 80
-                set greet "Omnipotent!"
-            else if test $seed -lt 90
-                set greet "Just Do It!!!!"
-            else if test $seed -lt 100
-                set greet "Alice In the Freezer."
-            else
-                set greet "Super Lucky Day!?"
-
-            end
-
-            figlet $greet
-        end
+      source ~/.config/fish/greeting.fish
     '';
     shellAliases = {
       ll = "ls -la";
       n = "nvim";
+      rebuild = "sudo nixos-rebuild switch";
     };
   };
+
+  home.file.".config/fish/greeting.fish".source = ./greeting.fish;
 
   xdg.configFile."niri".source = ./niri;
 
@@ -75,6 +47,10 @@
   home.file.".config/wallpaper/wallpaper.gif".source = ./assets/niri-wallpaper.gif;
 
   xdg.configFile."waybar".source = ./waybar;
+  home.file.".local/bin/niri-workspaces" = {
+    source = ./niri-workspaces.sh;
+    executable = true;
+  };
 
   home.pointerCursor = {
     package = pkgs.xcursor-pro;
@@ -115,7 +91,8 @@
     gnumake
     ripgrep
     fd
-    wl-clipboard
+    wl-clipboard # クリップボード
+    jq # json
 
     # 開発用
     nodejs

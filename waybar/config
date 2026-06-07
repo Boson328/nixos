@@ -24,7 +24,7 @@
     ],
 
     "custom/workspaces": {
-        "exec": "~/.config/waybar/niri-workspaces.sh",
+        "exec": "~/.local/bin/niri-workspaces",
         "return-type": "json",
         "format": "{}",
         "escape": false
