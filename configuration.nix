@@ -20,6 +20,9 @@ let
     installPhase = ''
       mkdir -p $out/share/sddm/themes/sddm-astronaut-theme
       cp -r . $out/share/sddm/themes/sddm-astronaut-theme
+      mkdir -p $out/share/fonts/truetype/pixelon
+      cp Fonts/pixelon.regular.ttf $out/share/fonts/truetype/pixelon/
+      cp Fonts/pixelon.regular.ttf $out/share/sddm/themes/sddm-astronaut-theme/
       sed -i 's|ConfigFile=Themes/astronaut.conf|ConfigFile=Themes/hyprland_kath.conf|' \
         $out/share/sddm/themes/sddm-astronaut-theme/metadata.desktop
     '';
@@ -55,6 +58,19 @@ in
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
+
+  services.keyd = {
+    enable = true;
+    keyboards.default = {
+      ids = [ "*" ]; # 後でここは設定するHHKBのみにしたい
+      settings = {
+        main = {
+          rightmeta = "F13";
+          rightshift = "F14";
+        };
+      };
+    };
+  };
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
@@ -95,6 +111,13 @@ in
       pkgs.qt6.qtmultimedia
     ];
   };
+  fonts.packages = [
+    (pkgs.runCommand "pixelon-font" { } ''
+      mkdir -p $out/share/fonts/truetype
+      cp ${sddm-astronaut-theme}/share/sddm/themes/sddm-astronaut-theme/Fonts/pixelon.regular.ttf \
+        $out/share/fonts/truetype/
+    '')
+  ];
 
   environment.etc."weston.ini".text = ''
     [keyboard]
@@ -131,6 +154,7 @@ in
     wget
     git
     foot
+    keyd
     sddm-astronaut-theme
     qt6.qtsvg
     qt6.qtmultimedia
