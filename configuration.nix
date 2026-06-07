@@ -1,6 +1,5 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 {
   config,
@@ -9,6 +8,23 @@
   ...
 }:
 
+let
+  sddm-astronaut-theme = pkgs.stdenv.mkDerivation {
+    name = "sddm-astronaut-theme";
+    src = pkgs.fetchFromGitHub {
+      owner = "keyitdev";
+      repo = "sddm-astronaut-theme";
+      rev = "master";
+      hash = "sha256-+Z1igZ4BxRqXr/lxfHEr3I4n/sX8+AIwUr6JFO9yoWs=";
+    };
+    installPhase = ''
+      mkdir -p $out/share/sddm/themes/sddm-astronaut-theme
+      cp -r . $out/share/sddm/themes/sddm-astronaut-theme
+      sed -i 's|ConfigFile=Themes/astronaut.conf|ConfigFile=Themes/hyprland_kath.conf|' \
+        $out/share/sddm/themes/sddm-astronaut-theme/metadata.desktop
+    '';
+  };
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -18,6 +34,7 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [ "video=1920x1080" ];
 
   networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -67,11 +84,33 @@
 
   services.displayManager.sddm = {
     enable = true;
-    wayland.enable = true;
+    wayland = {
+      enable = true;
+      compositorCommand = "${pkgs.weston}/bin/weston --shell=kiosk -c /etc/weston.ini";
+    };
     theme = "sddm-astronaut-theme";
-    extraPackages = [ pkgs.sddm-astronaut ];
+    extraPackages = [
+      sddm-astronaut-theme
+      pkgs.qt6.qtsvg
+      pkgs.qt6.qtmultimedia
+    ];
   };
 
+  environment.etc."weston.ini".text = ''
+    [keyboard]
+    keymap_layout=us
+    keymap_model=pc104
+    keymap_options=terminate:ctrl_alt_bksp
+    keymap_variant=
+
+    [libinput]
+    enable-tap=true
+    left-handed=false
+
+    [output]
+    name=Virtual-1
+    mode=1920x1080
+  '';
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
@@ -92,6 +131,9 @@
     wget
     git
     foot
+    sddm-astronaut-theme
+    qt6.qtsvg
+    qt6.qtmultimedia
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

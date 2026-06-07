@@ -112,7 +112,7 @@
 
     # フォントたち
     nerd-fonts.jetbrains-mono
-
+    source-han-sans
   ];
 
   i18n.inputMethod = {
@@ -121,5 +121,10 @@
     fcitx5.addons = [ pkgs.fcitx5-mozc ];
   };
 
-  fonts.fontconfig.enable = true;
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      sansSerif = [ "Source Han Sans JP" ];
+    };
+  };
 }
