@@ -1,0 +1,131 @@
+/* TokyoNight - waybar (GTK CSS) */
+
+* {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: #c0caf5;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+    background: rgba(26, 27, 38, 0.85);
+    border-radius: 10px;
+    padding: 0 6px;
+}
+
+#custom-workspaces,
+#clock,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#battery,
+#language,
+#custom-power {
+    padding: 4px 10px;
+    color: #c0caf5;
+    border-radius: 8px;
+}
+
+/* ワークスペース */
+#custom-workspaces {
+    font-size: 15px;
+    padding: 4px 12px;
+}
+
+/* 時計 */
+#clock {
+    color: #7dcfff;
+    font-weight: 600;
+}
+
+/* CPU */
+#cpu {
+    color: #7aa2f7;
+}
+
+#cpu:hover {
+    background: rgba(122, 162, 247, 0.15);
+}
+
+/* メモリ */
+#memory {
+    color: #bb9af7;
+}
+
+#memory:hover {
+    background: rgba(187, 154, 247, 0.15);
+}
+
+/* ネットワーク */
+#network {
+    color: #9ece6a;
+}
+
+#network.disconnected {
+    color: #f7768e;
+}
+
+#network:hover {
+    background: rgba(158, 206, 106, 0.15);
+}
+
+/* 音量 */
+#pulseaudio {
+    color: #e0af68;
+}
+
+#pulseaudio.muted {
+    color: #565f89;
+}
+
+#pulseaudio:hover {
+    background: rgba(224, 175, 104, 0.15);
+}
+
+/* バッテリー */
+#battery {
+    color: #9ece6a;
+}
+
+#battery.warning {
+    color: #e0af68;
+}
+
+#battery.critical {
+    color: #f7768e;
+    animation: blink 1s step-start infinite;
+}
+
+#battery.charging,
+#battery.plugged {
+    color: #7dcfff;
+}
+
+/* キーボードレイアウト */
+#language {
+    color: #a9b1d6;
+}
+
+/* 電源ボタン */
+#custom-power {
+    color: #f7768e;
+    font-size: 16px;
+    padding: 4px 12px;
+}
+
+#custom-power:hover {
+    background: rgba(247, 118, 142, 0.15);
+}
+
+@keyframes blink {
+    50% { opacity: 0.5; }
+}

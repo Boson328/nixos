@@ -5,6 +5,7 @@
   config,
   lib,
   pkgs,
+  niri,
   ...
 }:
 
@@ -179,6 +180,7 @@ in
   # };
   programs.niri = {
     enable = true;
+    package = niri.packages.x86_64-linux.niri-unstable;
   };
 
   programs.fish.enable = true;

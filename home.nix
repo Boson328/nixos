@@ -71,7 +71,25 @@
 
   xdg.configFile."ghostty".source = ./ghostty;
 
+  home.file.".config/starship.toml".source = ./starship.toml;
+  home.file.".config/wallpaper/wallpaper.gif".source = ./assets/niri-wallpaper.gif;
+
+  xdg.configFile."waybar".source = ./waybar;
+
+  home.pointerCursor = {
+    package = pkgs.xcursor-pro;
+    name = "XCursor-Pro-Dark";
+    size = 24;
+    gtk.enable = true;
+  };
+
   home.packages = with pkgs; [
+    # 壁紙
+    awww
+
+    #  上のバー
+    waybar
+
     # ターミナル
     ghostty
 
@@ -85,6 +103,7 @@
 
     # TUIツールたち
     lazygit
+    yazi
 
     # NeoVim関連
     tree-sitter
@@ -109,6 +128,12 @@
 
     # ブラウザ
     firefox
+
+    # Discord
+    vesktop
+
+    # Figma
+    figma-linux
 
     # フォントたち
     nerd-fonts.jetbrains-mono
