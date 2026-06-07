@@ -113,6 +113,7 @@
     # フォントたち
     nerd-fonts.jetbrains-mono
     source-han-sans
+    jetbrains-mono
   ];
 
   i18n.inputMethod = {

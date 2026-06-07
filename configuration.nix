@@ -117,6 +117,7 @@ in
       cp ${sddm-astronaut-theme}/share/sddm/themes/sddm-astronaut-theme/Fonts/pixelon.regular.ttf \
         $out/share/fonts/truetype/
     '')
+    pkgs.source-han-sans
   ];
 
   environment.etc."weston.ini".text = ''
