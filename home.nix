@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 {
   home.username = "boson";
   home.homeDirectory = "/home/boson";
@@ -46,6 +50,8 @@
   home.file.".config/starship.toml".source = ./starship.toml;
   home.file.".config/wallpaper/wallpaper.gif".source = ./assets/niri-wallpaper.gif;
 
+  home.file.".config/fuzzel/fuzzel.ini".source = ./fuzzel/fuzzel.ini;
+
   xdg.configFile."waybar".source = ./waybar;
   home.file.".local/bin/niri-workspaces" = {
     source = ./niri-workspaces.sh;
@@ -65,6 +71,9 @@
 
     #  上のバー
     waybar
+
+    # アプリケーションランチャー
+    fuzzel
 
     # ターミナル
     ghostty
