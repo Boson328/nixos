@@ -69,18 +69,18 @@ in
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
-  services.keyd = {
-    enable = true;
-    keyboards.default = {
-      ids = [ "*" ]; # 後でここは設定するHHKBのみにしたい
-      settings = {
-        main = {
-          rightmeta = "F13";
-          rightshift = "F14";
-        };
-      };
-    };
-  };
+  # services.keyd = {
+  #   enable = true;
+  # keyboards.default = {
+  #   ids = [ "*" ]; # 後でここは設定するHHKBのみにしたい
+  #   settings = {
+  #     main = {
+  #       rightmeta = "F13";
+  #       rightshift = "F14";
+  #     };
+  #   };
+  # };
+  # };
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
@@ -148,11 +148,25 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/home/boson/.config/sops/age/keys.txt";
+    secrets.github_ssh_key = {
+      path = "/home/boson/.ssh/id_ed25519";
+      owner = "boson";
+      mode = "0600";
+    };
+    secrets.boson_password = {
+      neededForUsers = true;
+    };
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.boson = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    password = "boson328";
+    hashedPasswordFile = config.sops.secrets.boson_password.path;
     shell = pkgs.fish;
   };
 
@@ -186,15 +200,11 @@ in
 
   programs.fish.enable = true;
 
-  sops = {
-    defaultSopsFile = ./secrets/secrets.yaml;
-    defaultSopsFormat = "yaml";
-    age.keyFile = "/home/boson/.config/sops/age/keys.txt";
-    secrets.github_ssh_key = {
-      path = "/home/boson/.ssh/id_ed25519";
-      owner = "boson";
-      mode = "0600";
-    };
+  services.fprintd.enable = true;
+
+  security.pam.services = {
+    login.fprintAuth = true;
+    sudo.fprintAuth = true;
   };
 
   # List services that you want to enable:
