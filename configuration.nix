@@ -45,7 +45,13 @@ in
         ./assets/limine-wallpaper.jpg
       ];
     };
+    extraEntries = ''
+      /Windows
+          protocol: efi_chainload
+          image_path: guid(e1a19b50-ee28-4d77-8fe7-c3e64397c415):/EFI/Microsoft/Boot/bootmgfw.efi
+    '';
   };
+
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [ "video=1920x1080" ];
 
@@ -53,6 +59,10 @@ in
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+  networking.networkmanager.insertNameservers = [
+    "1.1.1.1"
+    "8.8.8.8"
+  ];
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
@@ -203,8 +213,9 @@ in
   services.fprintd.enable = true;
 
   security.pam.services = {
-    login.fprintAuth = true;
     sudo.fprintAuth = true;
+    sddm.fprintAuth = false;
+    login.fprintAuth = false;
   };
 
   # List services that you want to enable:
