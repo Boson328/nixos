@@ -26,6 +26,7 @@
       zoxide init fish --cmd cd | source
       starship init fish | source
       source ~/.config/fish/greeting.fish
+      export HF_TOKEN=$(cat /run/secrets/hf_token)
     '';
     shellAliases = {
       ll = "ls -la";
@@ -41,8 +42,8 @@
   xdg.configFile."nvim".source = pkgs.fetchFromGitHub {
     owner = "boson328";
     repo = "nvimconfig";
-    rev = "fa9b5bc5fb735000759ad602c523971f8a6fca79";
-    hash = "sha256-l9Qu4yMQt07Vkh6sEJCmPeI0H2ebzp8Alk8WipXgbwo=";
+    rev = "2a7211b9a950e79f42f23eac99fa3a9955bc1341";
+    hash = "sha256-XPbOWldnCjZftdlPGcQktEcDrN0i68uFKDa0D2THOJA=";
   };
 
   xdg.configFile."ghostty".source = ./ghostty;
@@ -63,6 +64,12 @@
     name = "XCursor-Pro-Dark";
     size = 24;
     gtk.enable = true;
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config.common.default = "gtk";
   };
 
   home.packages = with pkgs; [
@@ -89,11 +96,16 @@
     # TUIツールたち
     lazygit
     yazi
+    (btop.override { cudaSupport = true; })
 
     # NeoVim関連
     tree-sitter
     nil # Nix LSP
     nixfmt-rfc-style # Formatter
+    pyright
+    stylua
+    lua-language-server
+    ruff
 
     # デフォルトで入れときたいやつ
     gcc
@@ -102,6 +114,13 @@
     fd
     wl-clipboard # クリップボード
     jq # json
+    ffmpeg
+    xdg-desktop-portal-gtk
+
+    # 偶に使うcli
+    github-cli
+    sops
+    nix-prefetch-scripts
 
     # 開発用
     nodejs
@@ -111,6 +130,7 @@
         "rust-analyzer"
       ];
     })
+    uv
 
     # ブラウザ
     firefox
@@ -120,6 +140,9 @@
 
     # Figma
     figma-linux
+
+    # office代替
+    libreoffice
 
     # フォントたち
     nerd-fonts.jetbrains-mono

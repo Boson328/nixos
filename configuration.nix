@@ -39,7 +39,7 @@ in
   boot.loader.systemd-boot.enable = false;
   boot.loader.limine = {
     enable = true;
-    resolution = "1920x1080x32";
+    resolution = "2560x1600x32";
     style = {
       wallpapers = [
         ./assets/limine-wallpaper.jpg
@@ -53,7 +53,11 @@ in
   };
 
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelParams = [ "video=1920x1080" ];
+
+  boot.kernelParams = [
+    "video=2560x1600"
+    "nvidia-drm.modeset=1"
+  ];
 
   networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -73,43 +77,12 @@ in
 
   # Select internationalisation properties.
   i18n.defaultLocale = "ja_JP.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
-
-  # services.keyd = {
-  #   enable = true;
-  # keyboards.default = {
-  #   ids = [ "*" ]; # 後でここは設定するHHKBのみにしたい
-  #   settings = {
-  #     main = {
-  #       rightmeta = "F13";
-  #       rightshift = "F14";
-  #     };
-  #   };
-  # };
-  # };
-
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
 
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
 
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # hardware.pulseaudio.enable = true;
-  # OR
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -153,7 +126,7 @@ in
 
     [output]
     name=Virtual-1
-    mode=1920x1080
+    mode=2560x1600
   '';
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
@@ -170,7 +143,43 @@ in
     secrets.boson_password = {
       neededForUsers = true;
     };
+    secrets.hf_token = {
+      owner = "boson";
+    };
+    # secrets.github_gpg_key = {
+    #   owner = "boson";
+    # };
   };
+
+  hardware.graphics.enable = true;
+
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+    nvidiaSettings = true;
+    powerManagement.enable = true;
+    powerManagement.finegrained = true;
+    prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
+  };
+
+  # system.activationScripts.importGpgKey = {
+  #   deps = ["setupSecrets"];
+  #   text = ''
+  #       if [ -f ${config.sops.secrets.github_gpg_key.path} ]; then
+  #           passphrase=$(cat ${config.sops.secrets.github_gpg_passphrase})
+  #           su - boson -c "gpg --batch --passphrase '$passphrase' --import ${config.sops.secrets.github_gpg_key.path}
+  #       fi"
+  #   '';
+  # };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.boson = {
@@ -179,8 +188,6 @@ in
     hashedPasswordFile = config.sops.secrets.boson_password.path;
     shell = pkgs.fish;
   };
-
-  # programs.firefox.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -196,6 +203,14 @@ in
     brightnessctl
   ];
 
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    MOZ_ENABLE_WAYLAND = "1";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    GBM_BACKEND = "nvidia-drm";
+    __NV_PRIME_RENDER_OFFLOAD = "1"; # optimus環境の場合のみ
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -209,6 +224,13 @@ in
   };
 
   programs.fish.enable = true;
+
+  programs.nix-ld.enable = true;
+
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry-curses;
+  };
 
   services.fprintd.enable = true;
 
@@ -254,4 +276,5 @@ in
   system.stateVersion = "24.11"; # Did you read the comment?
 
   nixpkgs.config.allowUnfree = true;
+
 }
