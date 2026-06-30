@@ -35,6 +35,7 @@
       ll = "ls -la";
       n = "nvim";
       rebuild = "sudo nixos-rebuild switch";
+      nvim-fetch = "nix-prefetch-git https://github.com/boson328/nvimconfig --rev refs/heads/nixos";
     };
   };
 
@@ -45,8 +46,8 @@
   xdg.configFile."nvim".source = pkgs.fetchFromGitHub {
     owner = "boson328";
     repo = "nvimconfig";
-    rev = "2a7211b9a950e79f42f23eac99fa3a9955bc1341";
-    hash = "sha256-XPbOWldnCjZftdlPGcQktEcDrN0i68uFKDa0D2THOJA=";
+    rev = "f8d1f1d0ba6a883d4d626cf160cf665b9c71f734";
+    hash = "sha256-UWJDC8ofh93cE0ghGjpWMkMB9NTyd/AZnFoDzUfQXhQ=";
   };
 
   xdg.configFile."ghostty".source = ./ghostty;
@@ -74,10 +75,6 @@
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     config.common.default = "gtk";
   };
-
-  home.file.".ssh/known_hosts".text = ''
-    github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
-  '';
 
   home.packages = with pkgs; [
     # 壁紙
