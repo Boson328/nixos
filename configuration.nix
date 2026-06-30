@@ -63,7 +63,7 @@ in
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  networking.networkmanager.insertNameservers = [
+  networking.networkmanager.appendNameservers = [
     "1.1.1.1"
     "8.8.8.8"
   ];
@@ -235,7 +235,7 @@ in
   services.fprintd.enable = true;
 
   security.pam.services = {
-    sudo.fprintAuth = true;
+    sudo.fprintAuth = false;
     sddm.fprintAuth = false;
     login.fprintAuth = false;
   };

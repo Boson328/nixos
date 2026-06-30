@@ -17,6 +17,9 @@
     withPython3 = true;
     withRuby = true;
     withNodeJs = true;
+    plugins = with pkgs.vimPlugins; [
+      lazy-nvim
+    ];
   };
 
   #------------ コンフィグ ---------------
@@ -71,6 +74,10 @@
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     config.common.default = "gtk";
   };
+
+  home.file.".ssh/known_hosts".text = ''
+    github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+  '';
 
   home.packages = with pkgs; [
     # 壁紙
