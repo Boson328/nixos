@@ -46,8 +46,8 @@
   xdg.configFile."nvim".source = pkgs.fetchFromGitHub {
     owner = "boson328";
     repo = "nvimconfig";
-    rev = "f8d1f1d0ba6a883d4d626cf160cf665b9c71f734";
-    hash = "sha256-UWJDC8ofh93cE0ghGjpWMkMB9NTyd/AZnFoDzUfQXhQ=";
+    rev = "726feddccec622abefc7cccba2dc4988d013b489";
+    hash = "sha256-4Cmb5QAIojMWSD5A6H75P6CwzPF+2HUboov0aODrdTs=";
   };
 
   xdg.configFile."ghostty".source = ./ghostty;
@@ -128,7 +128,7 @@
 
     # 開発用
     nodejs
-    (rust-bin.stable."1.87.0".default.override {
+    (rust-bin.stable.latest.default.override {
       extensions = [
         "rust-src"
         "rust-analyzer"

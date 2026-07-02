@@ -39,7 +39,7 @@ in
   boot.loader.systemd-boot.enable = false;
   boot.loader.limine = {
     enable = true;
-    resolution = "2560x1600x32";
+    resolution = "1920x1080x32";
     style = {
       wallpapers = [
         ./assets/limine-wallpaper.jpg
@@ -48,14 +48,14 @@ in
     extraEntries = ''
       /Windows
           protocol: efi_chainload
-          image_path: guid(e1a19b50-ee28-4d77-8fe7-c3e64397c415):/EFI/Microsoft/Boot/bootmgfw.efi
+          image_path: guid(2d7770ee-46de-4421-95ee-cdebddb3b68c):/EFI/Microsoft/Boot/bootmgfw.efi
     '';
   };
 
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelParams = [
-    "video=2560x1600"
+    "video=1920x1080"
     "nvidia-drm.modeset=1"
   ];
 
@@ -192,7 +192,7 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim
+    neovim-unwrapped
     wget
     git
     foot
@@ -201,6 +201,12 @@ in
     qt6.qtsvg
     qt6.qtmultimedia
     brightnessctl
+
+    # cuda触ってたときのやつ
+    llvm
+    cudaPackages_13.cudatoolkit
+    cudaPackages_13.cuda_nvcc
+    clang-tools
   ];
 
   environment.sessionVariables = {
@@ -236,6 +242,19 @@ in
   programs.gnupg.agent = {
     enable = true;
     pinentryPackage = pkgs.pinentry-curses;
+  };
+
+  services.keyd = {
+    enable = true;
+    keyboards.default = {
+      ids = [ "04fe:0021" ];
+      settings = {
+        main = {
+          rightmeta = "f13";
+          rightshift = "f14";
+        };
+      };
+    };
   };
 
   services.fprintd.enable = true;

@@ -382,6 +382,9 @@ window-rule {
 binds {
     Muhenkan { spawn "fcitx5-remote" "-s" "keyboard-us"; }
     Henkan { spawn "fcitx5-remote" "-s" "skk"; }
+
+    XF86Tools { spawn "fcitx5-remote" "-s" "keyboard-us"; }
+    XF86Launch5 { spawn "fcitx5-remote" "-s" "skk"; }
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
     // in the end. To find an XKB name for a particular key, you may use a program
     // like wev.
