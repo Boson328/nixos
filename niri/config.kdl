@@ -86,9 +86,6 @@ cursor {
 // https://yalter.github.io/niri/Configuration:-Outputs
 // Remember to uncomment the node by removing "/-"!
 
-output "Virtual-1" {
-    mode "1920x1080@60.000"
-}
 
 /-output "eDP-1" {
     // Uncomment this line to disable this output.
@@ -119,6 +116,10 @@ output "Virtual-1" {
     // If the position is unset or results in an overlap, the output is instead placed
     // automatically.
     position x=1280 y=0
+}
+
+output "HDMI-A-1" {
+    mode "1920x1080@75.001"
 }
 
 // Settings that influence how windows are positioned and sized.

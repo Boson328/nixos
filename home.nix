@@ -17,9 +17,6 @@
     withPython3 = true;
     withRuby = true;
     withNodeJs = true;
-    plugins = with pkgs.vimPlugins; [
-      lazy-nvim
-    ];
   };
 
   #------------ コンフィグ ---------------
@@ -46,8 +43,8 @@
   xdg.configFile."nvim".source = pkgs.fetchFromGitHub {
     owner = "boson328";
     repo = "nvimconfig";
-    rev = "726feddccec622abefc7cccba2dc4988d013b489";
-    hash = "sha256-4Cmb5QAIojMWSD5A6H75P6CwzPF+2HUboov0aODrdTs=";
+    rev = "1687c72a2814d2416f376599536ed5138eb6f5bd";
+    hash = "sha256-iqO7aQGR0eGQ48F6WtPQwmCTWea+4uRTOAdEUbzh+dU=";
   };
 
   xdg.configFile."ghostty".source = ./ghostty;
@@ -152,6 +149,9 @@
     nerd-fonts.jetbrains-mono
     source-han-sans
     jetbrains-mono
+
+    # unity
+    unityhub
   ];
 
   i18n.inputMethod = {

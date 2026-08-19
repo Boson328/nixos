@@ -171,6 +171,10 @@ in
     };
   };
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
   # system.activationScripts.importGpgKey = {
   #   deps = ["setupSecrets"];
   #   text = ''
@@ -207,6 +211,8 @@ in
     cudaPackages_13.cudatoolkit
     cudaPackages_13.cuda_nvcc
     clang-tools
+
+    xwayland-satellite
   ];
 
   environment.sessionVariables = {
@@ -215,6 +221,12 @@ in
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     GBM_BACKEND = "nvidia-drm";
     __NV_PRIME_RENDER_OFFLOAD = "1"; # optimus環境の場合のみ
+    LD_LIBRARY_PATH = lib.makeLibraryPath [
+      pkgs.cudaPackages_13.cudatoolkit
+      pkgs.cudaPackages_13.cuda_nvrtc
+      pkgs.linuxPackages.nvidia_x11
+    ];
+    CUDA_PATH = pkgs.cudaPackages_13.cudatoolkit;
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -242,6 +254,12 @@ in
   programs.gnupg.agent = {
     enable = true;
     pinentryPackage = pkgs.pinentry-curses;
+  };
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
   services.keyd = {
@@ -301,5 +319,9 @@ in
   system.stateVersion = "24.11"; # Did you read the comment?
 
   nixpkgs.config.allowUnfree = true;
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "pnpm-10.29.2"
+  ];
 
 }
