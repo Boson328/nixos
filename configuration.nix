@@ -213,6 +213,11 @@ in
     clang-tools
 
     xwayland-satellite
+
+    #csharp
+    dotnet-sdk_8
+    libGL
+    mesa
   ];
 
   environment.sessionVariables = {
@@ -225,6 +230,8 @@ in
       pkgs.cudaPackages_13.cudatoolkit
       pkgs.cudaPackages_13.cuda_nvrtc
       pkgs.linuxPackages.nvidia_x11
+      pkgs.sqlite
+      pkgs.libGL
     ];
     CUDA_PATH = pkgs.cudaPackages_13.cudatoolkit;
   };

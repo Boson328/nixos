@@ -31,7 +31,7 @@
     shellAliases = {
       ll = "ls -la";
       n = "nvim";
-      rebuild = "sudo nixos-rebuild switch";
+      rebuild = "sudo nixos-rebuild switch --flake ~/nixos#nixos";
       nvim-fetch = "nix-prefetch-git https://github.com/boson328/nvimconfig --rev refs/heads/nixos";
     };
   };
@@ -43,8 +43,8 @@
   xdg.configFile."nvim".source = pkgs.fetchFromGitHub {
     owner = "boson328";
     repo = "nvimconfig";
-    rev = "1687c72a2814d2416f376599536ed5138eb6f5bd";
-    hash = "sha256-iqO7aQGR0eGQ48F6WtPQwmCTWea+4uRTOAdEUbzh+dU=";
+    rev = "41577ac78351fa32d96c1060cc009b5df7f5b238";
+    hash = "sha256-VnObjMpu0qBt86ZtCsxzPashSbct3cKbh0VIDlXkcDM=";
   };
 
   xdg.configFile."ghostty".source = ./ghostty;
@@ -149,9 +149,15 @@
     nerd-fonts.jetbrains-mono
     source-han-sans
     jetbrains-mono
+    ipafont
+    ipaexfont
 
     # unity
     unityhub
+    sqlite
+    omnisharp-roslyn
+
+    swaylock
   ];
 
   i18n.inputMethod = {

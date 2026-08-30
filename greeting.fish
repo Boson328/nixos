@@ -5,13 +5,13 @@ function fish_greeting
     if test $seed -lt 10
         set greet "Hello, World!"
     else if test $seed -lt 20
-        set greet "Good Luck!"
+        set greet "Attention is All You Need"
     else if test $seed -lt 30
         set greet "May the Force!"
     else if test $seed -lt 40
         set greet "Stay Hungry, Stay Foolish!"
     else if test $seed -lt 50
-        set greet "Awesome Fish!"
+        set greet "Sholder of Giants!"
     else if test $seed -lt 60
         set greet "Deja vu!"
     else if test $seed -lt 70

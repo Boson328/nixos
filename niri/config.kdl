@@ -404,6 +404,7 @@ binds {
     Mod+Return hotkey-overlay-title="ターミナルを起動" { spawn "ghostty"; }
     Mod+D hotkey-overlay-title="Discordを起動" { spawn "vesktop"; }
     Mod+W hotkey-overlay-title="FireFoxを起動" { spawn "firefox"; }
+    Mod+Y hotkey-overlay-title="UnityHubを起動" { spawn "unityhub"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
