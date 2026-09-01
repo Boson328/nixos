@@ -27,6 +27,7 @@
       starship init fish | source
       source ~/.config/fish/greeting.fish
       export HF_TOKEN=$(cat /run/secrets/hf_token)
+      export DOTNET_ROOT=$(dirname (readlink -f (which dotnet)))
     '';
     shellAliases = {
       ll = "ls -la";
@@ -43,8 +44,8 @@
   xdg.configFile."nvim".source = pkgs.fetchFromGitHub {
     owner = "boson328";
     repo = "nvimconfig";
-    rev = "41577ac78351fa32d96c1060cc009b5df7f5b238";
-    hash = "sha256-VnObjMpu0qBt86ZtCsxzPashSbct3cKbh0VIDlXkcDM=";
+    rev = "6c8c096056bdfe318360f18a173ff9240431ead1";
+    hash = "sha256-h5dDWn1gVTdQ5CTCaurBQ+FWqChuIgAUL1MDomK5ikE=";
   };
 
   xdg.configFile."ghostty".source = ./ghostty;
